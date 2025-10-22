@@ -34,17 +34,36 @@ def get_categories(data:list)->dict:
     
     return categories
 
+def get_old_inventory(data:list, category:str, age:int, field:str)->list:
+    old_stuff = []
+    for item in data:
+        if item.get('category') == category and int(item.get('age')) > age:
+            old_stuff.append(item.get(field))
+
+    return old_stuff
+
 def main():
     file_path:str = "inventory.csv"
     data:list = get_data(file_path)
 
-    # num_items = get_num_items(data)
-    # print(f"total number of items: {num_items}")
-
+    # #1 how many items total
+    num_items = get_num_items(data)
+    
+    # #2 - how many of each item
     categories = get_categories(data)
-    print(f"Laptops: {categories.get('Laptop')}")
-    print(f"Tablets: {categories.get('Tablet')}")
-    print(f"Phones: {categories.get('Phone')}")
+    
+    # #3 - how many laptops are older than 7 yrs old
+    old_inventory = get_old_inventory(data, 'Laptop', 7, 'product_id')
+    
+
+    #report
+    print(f"Number of total items in inventory: {num_items}")
+    print(f"Number of Laptops in inventory: {categories.get('Laptop')}")
+    print(f"Number of Tablets in inventory: {categories.get('Tablet')}")
+    print(f"Number of Phones in inventory: {categories.get('Phone')}")
+    print(f"Number of out dated laptops: {len(old_inventory)}")
+    print('')
+    print(f"Out dated laptops: {old_inventory}")
     
 
     
